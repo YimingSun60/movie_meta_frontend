@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_meta/search_bar.dart';
 import 'service.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
         title: 'Movie Meta',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(0, 255, 255, 255)),
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: Color.fromARGB(0, 255, 255, 255)),
         ),
         home: MyHomePage(),
       ),
@@ -26,33 +28,21 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  
   void toggleFavorite() {
-
     notifyListeners();
   }
 }
 
-class MyHomePage extends StatelessWidget{
+class MyHomePage extends StatelessWidget {
   //var data = await fetchData();
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-         body: FutureBuilder(
-          future: fetchData(),
-          builder: (context, snapshot){
-            if(snapshot.connectionState == ConnectionState.done){
-              if(snapshot.hasData){
-                return Text(snapshot.data.toString());
-              }
-              else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } 
-            }
-            return CircularProgressIndicator();
-            
-          }
-         )
-    );
+        appBar: AppBar(title: Text("Movie Meta")),
+        body: Column(
+            children: [
+            Search_BarWidget()
+    ]));
   }
 }
+
