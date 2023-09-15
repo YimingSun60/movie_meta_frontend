@@ -1,29 +1,14 @@
 import 'service.dart';
 import 'package:flutter/material.dart';
 
-class Search_BarWidget extends StatefulWidget{
-  const Search_BarWidget({
-    super.key
-  });
+final String searchUrl = "search?title=";
 
-  @override
-  _Search_BarState createState() => _Search_BarState();
-}
-
-class _Search_BarState extends State<Search_BarWidget>{
-  String hinText = "Search for a movie";
-
-  late TextEditingController _controller;
-
-  @override
-  void initState(){
-    super.initState();
-    _controller = TextEditingController();
-  }
+class SearchButton extends StatelessWidget{
 
   @override
   Widget build(context){
     return FloatingActionButton(
+      child: Icon(Icons.search),
       onPressed: () => showSearch(context: context, delegate: MovieSearchDelegate())
     );
   }
@@ -55,8 +40,9 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    print(searchUrl + query);
     // Show some result based on the selection
-    return FutureBuilder(future: backendService.fetchDataByName(query), builder: (context, snapshot) {
+    return FutureBuilder(future: backendService.fetchData(searchUrl + Uri.encodeComponent(query)), builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       } else if (snapshot.hasError) {
@@ -76,7 +62,8 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder(future: backendService.fetchDataByName(query), builder: (context, snapshot) {
+    print(searchUrl + query);
+    return FutureBuilder(future: backendService.fetchData(searchUrl + Uri.encodeComponent(query)), builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       } else if (snapshot.hasError) {

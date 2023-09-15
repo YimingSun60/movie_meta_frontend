@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 class BackendService extends ChangeNotifier {
 
   //var _data = [];
-  Future fetchDataByName(String name) async {
+  Future fetchData(String name) async {
     try {
       final response = await http.get(
-          Uri.parse('http://localhost:8080/search?title=${Uri.encodeComponent(name)}')
+          Uri.parse('http://localhost:8080/${name}')
       );
 
       if (response.statusCode == 200) {
