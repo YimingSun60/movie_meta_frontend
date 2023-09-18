@@ -15,9 +15,6 @@ class BackendService extends ChangeNotifier {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
 
-        // You can store the data locally if needed
-        // _data = data;
-
         notifyListeners(); // Notify listeners about the change
         return data;
       } else {

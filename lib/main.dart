@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/navigation.dart';
 import 'package:movie_meta/basic_widgets/search_bar.dart';
+import 'package:movie_meta/basic_widgets/service.dart';
 import 'package:provider/provider.dart';
 import 'pages/homepage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+      MultiProvider(providers: [
+        ChangeNotifierProvider(create: (context) => MyAppState()),
+        ChangeNotifierProvider(create: (context) => BackendService()),
+      ],
+      child: MyApp(),)
+      );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,9 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
+    return MaterialApp(
         title: 'Movie Meta',
         theme: ThemeData(
           useMaterial3: true,
@@ -23,8 +28,7 @@ class MyApp extends StatelessWidget {
               ColorScheme.fromSeed(seedColor: Color.fromARGB(0, 255, 255, 255)),
         ),
         home: MainPage(),
-      ),
-    );
+      );
   }
 }
 
