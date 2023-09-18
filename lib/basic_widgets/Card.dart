@@ -1,18 +1,64 @@
 import 'package:flutter/material.dart';
+import '/pages/moviepage.dart';
 
-class MovieCard extends StatelessWidget{
+class MovieCard extends StatelessWidget {
   final String title;
   final String image;
-  const MovieCard({Key? key, required this.title, required this.image}) : super(key: key);
+  final String generes;
+
+  const MovieCard({Key? key, required this.title, required this.image, required this.generes})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context){
-    return Card(
-      child: Column(
-        children: [
-          Image.network(image),
-          Text(title)
-        ],
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300, // give it a fixed height or any value you desire
+      width: 100,
+      child: Card(
+        color: Colors.white,
+        child: InkWell(
+          splashColor: Colors.black.withAlpha(30),
+          // You can use any widget in place of `Placeholder`
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: image != ""
+                    ? Image.network(image,
+                        width: 100,
+                        fit: BoxFit.contain,
+                        alignment: Alignment(-1.0, -1.0))
+                    : Placeholder(
+                        fallbackHeight: 200.0, fallbackWidth: double.infinity),
+              ),
+              Flexible(
+                child: Column(
+                    //mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Center(
+                        child: Text(textAlign: TextAlign.center,title,
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold, fontFamily: 'RobotoMono'),
+                        ),
+                      ),
+                      Center(
+                        child: Text(textAlign: TextAlign.center,generes,
+                        style: TextStyle(
+                            fontSize: 15.0, fontWeight: FontWeight.bold, fontFamily: 'RobotoMono'),
+                        ),
+                      ),
+                    ]),
+              )
+            ],
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MoviePage()),
+            );
+          },
+        ),
       ),
     );
   }
