@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 
@@ -10,7 +9,7 @@ class BackendService extends ChangeNotifier {
   Future fetchData(String name) async {
     try {
       final response = await http.get(
-          Uri.parse('http://localhost:8080/${name}')
+          Uri.parse('http://localhost:8080/$name')
       );
 
       if (response.statusCode == 200) {

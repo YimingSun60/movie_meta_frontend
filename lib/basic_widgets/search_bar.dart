@@ -1,7 +1,7 @@
 import 'service.dart';
 import 'package:flutter/material.dart';
 
-final String searchUrl = "search?title=";
+const String searchUrl = "search?title=";
 
 class SearchButton extends StatelessWidget{
 

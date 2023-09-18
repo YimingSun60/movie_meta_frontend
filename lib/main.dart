@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/navigation.dart';
 import 'package:movie_meta/basic_widgets/search_bar.dart';
-import 'basic_widgets/service.dart';
 import 'package:provider/provider.dart';
 import 'pages/homepage.dart';
 
