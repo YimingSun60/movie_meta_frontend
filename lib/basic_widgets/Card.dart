@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movie_meta/basic_widgets/service.dart';
+import 'package:provider/provider.dart';
 import '/pages/moviepage.dart';
+
+const String searchUrl = "search?title=";
 
 class MovieCard extends StatelessWidget {
   final String title;
@@ -53,9 +57,12 @@ class MovieCard extends StatelessWidget {
             ],
           ),
           onTap: () {
+            var _backendService = Provider.of<BackendService>(context, listen: false);
+            print(title);
+            _backendService.fetchData(searchUrl + Uri.encodeComponent(title));
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MoviePage()),
+              MaterialPageRoute(builder: (context) => MoviePage(title: title)),
             );
           },
         ),
