@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class BackendService extends ChangeNotifier {
 
-  //var _data = [];
+  List<dynamic> _data = [];
+  get data => _data;
   Future fetchData(String name) async {
     try {
       final response = await http.get(
@@ -13,10 +14,11 @@ class BackendService extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
+        _data = jsonDecode(response.body);
+        //print(data);
 
         notifyListeners(); // Notify listeners about the change
-        return data;
+        return _data;
       } else {
         throw Exception('Failed to load data with status: ${response.statusCode}');
       }
