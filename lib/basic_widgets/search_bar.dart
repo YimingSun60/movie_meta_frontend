@@ -18,6 +18,7 @@ class SearchButton extends StatelessWidget{
 class MovieSearchDelegate extends SearchDelegate {
   final BackendService backendService = BackendService();
 
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     // Actions for the app bar, like clearing the search query
@@ -31,6 +32,7 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
+
     // Leading icon on the left of the app bar
     return IconButton(
       icon: Icon(Icons.arrow_back),
@@ -40,9 +42,11 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    late Future _resultsFuture;
     print(searchUrl + query);
+    _resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
     // Show some result based on the selection
-    return FutureBuilder(future: backendService.fetchData(searchUrl + Uri.encodeComponent(query)), builder: (context, snapshot) {
+    return FutureBuilder(future: _resultsFuture, builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       } else if (snapshot.hasError) {
@@ -62,8 +66,10 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    late Future _resultsFuture;
     print(searchUrl + query);
-    return FutureBuilder(future: backendService.fetchData(searchUrl + Uri.encodeComponent(query)), builder: (context, snapshot) {
+    _resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
+    return FutureBuilder(future: _resultsFuture, builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       } else if (snapshot.hasError) {
