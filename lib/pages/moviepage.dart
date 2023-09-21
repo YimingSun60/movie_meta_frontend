@@ -36,14 +36,45 @@ class MoviePage extends StatelessWidget {
               } else {
                 return Stack(children: <Widget>[
                   Container(
-                    color: Colors.black,
-                    height: MediaQuery.of(context).size.height,
+                    color: Colors.white,
+                    height: 400,
                     width: MediaQuery.of(context).size.width,
                     child: Image(
                       image: NetworkImage(snapshot.data[0]['thumbnail']),
                       fit: BoxFit.contain,
                     ),
                   ),
+                  Positioned(
+                      bottom: 0,
+                      child: SingleChildScrollView(
+                          child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, -5),
+                            )
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20.0),
+                          ),
+                        ),
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              "Extract: " +
+                                  snapshot.data[0]['extract'].toString(),
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'RobotoMono'),
+                            )),
+                      ))),
                   SizedBox.expand(
                     child: MovieDragableScrollableSheet(
                         text: snapshot.data[0]['extract'].toString()),
@@ -67,39 +98,38 @@ class MovieDragableScrollableSheet extends StatelessWidget {
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(20.0),
-              ),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, -5),
+              )
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20.0),
             ),
-            child: Material(
-              color: Colors.white,
-              elevation: 100.0,
-              shadowColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20.0),
+          ),
+          child: ListView.builder(
+            controller: scrollController,
+            itemCount: 2,
+            itemBuilder: (BuildContext context, int index) {
+              return Column(children: [
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  leading: CircleAvatar(child: Text('A')),
+                  title: Text("HeadLine"),
                 ),
-              ),
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: 2,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(children: [
-                    ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20)),
-                      ),
-                      leading: CircleAvatar(child: Text('A')),
-                      title: Text("HeadLine"),
-                    ),
-                    Divider()
-                  ]);
-                },
-              ),
-            ));
+                Divider()
+              ]);
+            },
+          ),
+        );
       },
     );
   }
