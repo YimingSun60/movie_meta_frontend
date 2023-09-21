@@ -33,13 +33,13 @@ class _MyHomePageState extends State<MyHomePage>{
                   child: ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      generes = "";
+                      generes = "Genres: ";
                       title = snapshot.data[index]['title'];
                       snapshot.data[index]['thumbnail'] != null
                           ? image = snapshot.data[index]['thumbnail']
                           : image = "";
                       snapshot.data[index]['genres'].asMap().forEach((i,element) {
-                        generes += "Genre: ";
+                        //generes += "Genre: ";
                         if(i == snapshot.data[index]['genres'].length - 1){
                           generes += element;
                         }

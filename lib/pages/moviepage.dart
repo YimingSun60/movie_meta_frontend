@@ -13,45 +13,94 @@ class MoviePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var _backendService = Provider.of<BackendService>(context, listen: false);
     print(title);
-    return Container(
-      color: Colors.black,
-      child: Column(
-        children: [
-          AppBar(
-            title: Text(title),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          FutureBuilder(
-              future: _backendService
-                  .fetchData(searchUrl + Uri.encodeComponent(title)),
-              builder: (context, snapshot) {
-                //print(searchUrl + Uri.encodeComponent(title));
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.data == null) {
-                  return Center(child: Text('No data'));
-                } else {
-                  return Container(
-                      height: 300,
-                      child: Column(children: <Widget>[
-                        Text(snapshot.data[0]['title']),
-                        Text(snapshot.data[0]['genres'].toString()),
-                        Expanded(
-                          child: Text(snapshot.data[0]['extract']),
-                        )
-                      ]));
-                }
-              })
-          //Image(image: NetworkImage(movie[0]['thumbnail'])),
-        ],
-      ),
+        ),
+        body: FutureBuilder(
+            future: _backendService
+                .fetchData(searchUrl + Uri.encodeComponent(title)),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.data == null) {
+                return Center(child: Text('No data'));
+              } else {
+                return Stack(children: <Widget>[
+                  Container(
+                    color: Colors.black,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image(
+                      image: NetworkImage(snapshot.data[0]['thumbnail']),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox.expand(
+                    child: MovieDragableScrollableSheet(
+                        text: snapshot.data[0]['extract'].toString()),
+                  )
+                ]);
+              }
+            }));
+  }
+}
+
+class MovieDragableScrollableSheet extends StatelessWidget {
+  final String text;
+
+  const MovieDragableScrollableSheet({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.2,
+      minChildSize: 0.1,
+      maxChildSize: 0.8,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20.0),
+              ),
+            ),
+            child: Material(
+              color: Colors.white,
+              elevation: 100.0,
+              shadowColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20.0),
+                ),
+              ),
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: 2,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(children: [
+                    ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      leading: CircleAvatar(child: Text('A')),
+                      title: Text("HeadLine"),
+                    ),
+                    Divider()
+                  ]);
+                },
+              ),
+            ));
+      },
     );
   }
 }
