@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
-import 'package:movie_meta/basic_widgets/Card.dart';
+import 'package:movie_meta/basic_widgets/card.dart';
 
 class MyHomePage extends StatefulWidget{
   const MyHomePage ({Key ? key}) : super(key:key);
@@ -16,7 +16,7 @@ class _MyHomePageState extends State<MyHomePage>{
   final BackendService backendService = BackendService();
   @override
   Widget build(BuildContext context){
-    return FutureBuilder(future: backendService.fetchData("root"), builder: (context, snapshot) {
+    return FutureBuilder(future: backendService.fetchData("home"), builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       }
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage>{
                           generes += element + ", ";
                         }
                       });
-                      return MovieCard(title: title, image: image, generes: generes);
+                      return MovieCard(title: title, image: image, generes: generes, id: snapshot.data[index]['id']);
                       //return Text("Item 1");
                     },
                   )

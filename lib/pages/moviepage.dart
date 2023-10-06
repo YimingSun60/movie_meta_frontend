@@ -6,13 +6,15 @@ const String searchUrl = "search?title=";
 
 class MoviePage extends StatelessWidget {
   final String title;
+  final String id;
 
-  const MoviePage({Key? key, required this.title}) : super(key: key);
+  //const MoviePage({Key? key, required this.title}) : super(key: key);
+  const MoviePage({Key? key, required this.id, required this.title}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var _backendService = Provider.of<BackendService>(context, listen: false);
-    print(title);
+    print(id);
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -25,7 +27,7 @@ class MoviePage extends StatelessWidget {
         ),
         body: FutureBuilder(
             future: _backendService
-                .fetchData(searchUrl + Uri.encodeComponent(title)),
+                .fetchData(searchUrl + Uri.encodeComponent(id)),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());

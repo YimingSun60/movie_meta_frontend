@@ -9,8 +9,9 @@ class MovieCard extends StatelessWidget {
   final String title;
   final String image;
   final String generes;
+  final String id;
 
-  const MovieCard({Key? key, required this.title, required this.image, required this.generes})
+  const MovieCard({Key? key, required this.title, required this.image, required this.generes, required this.id})
       : super(key: key);
 
   @override
@@ -62,7 +63,7 @@ class MovieCard extends StatelessWidget {
             _backendService.fetchData(searchUrl + Uri.encodeComponent(title));
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MoviePage(title: title)),
+              MaterialPageRoute(builder: (context) => MoviePage(id: id, title: title)),
             );
           },
         ),
