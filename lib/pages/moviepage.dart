@@ -9,7 +9,8 @@ class MoviePage extends StatelessWidget {
   final String id;
 
   //const MoviePage({Key? key, required this.title}) : super(key: key);
-  const MoviePage({Key? key, required this.id, required this.title}): super(key: key);
+  const MoviePage({Key? key, required this.id, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,7 @@ class MoviePage extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-            future: _backendService
-                .fetchData(searchUrl + id),
+            future: _backendService.fetchData(searchUrl + id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -48,36 +48,48 @@ class MoviePage extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                      bottom: 0,
-                      child: SingleChildScrollView(
-                          child: Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: Offset(0, -5),
-                            )
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20.0),
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: DraggableScrollableSheet(
+                      initialChildSize: 0.8,
+                      minChildSize: 0.3,
+                      maxChildSize: 1,
+                      builder: (BuildContext context, ScrollController scrollController) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, -5),
+                              ),
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20.0),
+                            ),
                           ),
-                        ),
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        width: MediaQuery.of(context).size.width,
-                        child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              "Extract: " +
-                                  snapshot.data[0]['extract'].toString(),
-                              style: TextStyle(
+                          child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                "Extract: " + snapshot.data[0]['extract'].toString(),
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.normal,
-                                  fontFamily: 'RobotoMono'),
-                            )),
-                      ))),
+                                  fontFamily: 'RobotoMono',
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   SizedBox.expand(
                     child: MovieDragableScrollableSheet(
                         text: snapshot.data[0]['extract'].toString()),
