@@ -28,7 +28,7 @@ class _MyNavigationBarState extends State<MyNavigationBar>{
       onDestinationSelected: (int index) {
         setState(() {
           _selectedIndex = index;
-          print(_selectedIndex);
+          //print(_selectedIndex);
         });
         widget.onIndexChanged?.call(index);
       },

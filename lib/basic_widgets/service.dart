@@ -9,13 +9,14 @@ class BackendService extends ChangeNotifier {
   get data => _data;
   Future fetchData(String name) async {
     try {
+      print(Uri.parse('http://localhost:8080/$name'));
       final response = await http.get(
           Uri.parse('http://localhost:8080/$name')
       );
 
       if (response.statusCode == 200) {
         _data = jsonDecode(response.body);
-        //print(data);
+        
 
         notifyListeners(); // Notify listeners about the change
         return _data;
@@ -23,7 +24,7 @@ class BackendService extends ChangeNotifier {
         throw Exception('Failed to load data with status: ${response.statusCode}');
       }
     } catch (error) {
-      print(error); // For debugging purposes
+      //print(error); // For debugging purposes
       throw Exception('Failed to load data due to network issues.');
     }
   }

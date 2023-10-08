@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
 import 'package:movie_meta/basic_widgets/card.dart';
+import 'package:objectid/objectid.dart';
 
 class MyHomePage extends StatefulWidget{
   const MyHomePage ({Key ? key}) : super(key:key);
@@ -16,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage>{
   final BackendService backendService = BackendService();
   @override
   Widget build(BuildContext context){
-    return FutureBuilder(future: backendService.fetchData("home"), builder: (context, snapshot) {
+    return FutureBuilder(future: backendService.fetchData("public/home"), builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       }
@@ -33,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage>{
                   child: ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
+                      //print("flag1");
                       generes = "Genres: ";
                       title = snapshot.data[index]['title'];
                       snapshot.data[index]['thumbnail'] != null
@@ -47,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage>{
                           generes += element + ", ";
                         }
                       });
-                      return MovieCard(title: title, image: image, generes: generes, id: snapshot.data[index]['id']);
+                      //print(snapshot.data[index]['id']);
+                      return MovieCard(title: title, image: image, generes: generes, id: snapshot.data[index]['id'].toString());
                       //return Text("Item 1");
                     },
                   )

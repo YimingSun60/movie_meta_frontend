@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/navigation.dart';
 import 'package:movie_meta/basic_widgets/search_bar.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
+import 'package:movie_meta/pages/mypage.dart';
 import 'package:provider/provider.dart';
 import 'pages/homepage.dart';
 
@@ -57,11 +58,7 @@ class _MainPageState extends State<MainPage> {
         alignment: Alignment.center,
         child: const Text('Page 2'),
       ),
-      Container(
-        color: Colors.blue,
-        alignment: Alignment.center,
-        child: const Text('Page 3'),
-      ),
+      Mypage()
     ];
     return Scaffold(
       appBar: AppBar(title: Text("Movie Meta")),
@@ -69,7 +66,7 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: MyNavigationBar(
           onIndexChanged: (index) {
             setState(() => _selectedIndex = index);
-            print(_selectedIndex);
+            //print(_selectedIndex);
           }),
       body: pages[_selectedIndex],
     );

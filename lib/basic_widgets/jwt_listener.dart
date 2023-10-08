@@ -14,16 +14,17 @@ class JwtListener{
   }
 
   //login
-  Future<String> getNewToken(String token, String username, String password) async{
+  Future<String> getNewToken(String username, String password) async{
     var url = Uri.parse('http://localhost:8080/auth/login');
     var body = jsonEncode({'username': username, 'password': password});
+    print(body);
     final response = await http.post(
       url, body: body,
       headers: {"Content-Type": "application/json"},
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      token = data['token'];
+      String token = data['token'];
       return token;
     } else {
       throw Exception('Failed to load data with status: ${response.statusCode}');

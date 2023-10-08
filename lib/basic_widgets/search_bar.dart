@@ -1,7 +1,7 @@
 import 'service.dart';
 import 'package:flutter/material.dart';
 
-const String searchUrl = "search?title=";
+const String searchUrl = "public/search?title=";
 
 class SearchButton extends StatelessWidget{
 
@@ -43,7 +43,7 @@ class MovieSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     late Future _resultsFuture;
-    print(searchUrl + query);
+    //print(searchUrl + query);
     _resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
     // Show some result based on the selection
     return FutureBuilder(future: _resultsFuture, builder: (context, snapshot) {
@@ -67,7 +67,7 @@ class MovieSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     late Future _resultsFuture;
-    print(searchUrl + query);
+    //print(searchUrl + query);
     _resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
     return FutureBuilder(future: _resultsFuture, builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {

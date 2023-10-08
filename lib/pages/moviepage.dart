@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
 import 'package:provider/provider.dart';
 
-const String searchUrl = "search?title=";
+const String searchUrl = "public/movie/";
 
 class MoviePage extends StatelessWidget {
   final String title;
@@ -14,7 +14,8 @@ class MoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _backendService = Provider.of<BackendService>(context, listen: false);
-    print(id);
+    //print(id);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -27,7 +28,7 @@ class MoviePage extends StatelessWidget {
         ),
         body: FutureBuilder(
             future: _backendService
-                .fetchData(searchUrl + Uri.encodeComponent(id)),
+                .fetchData(searchUrl + id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
