@@ -1,54 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:movie_meta/basic_widgets/jwt_listener.dart';
+import 'package:movie_meta/Auth/jwt_listener.dart';
+import 'package:movie_meta/Auth/secure_storage.dart';
+import 'package:movie_meta/basic_widgets/service.dart';
+import 'package:http/http.dart' as http;
+import 'package:movie_meta/pages/profilepage.dart';
 
-import '../Entity/User.dart';
+import 'Login.dart';
 
-class Mypage extends StatefulWidget{
-  const Mypage({Key? key}) : super(key:key);
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
 
   @override
-  _MypageState createState() => _MypageState();
+  _MyPageState createState() => _MyPageState();
 }
 
-class _MypageState extends State<Mypage>{
+class _MyPageState extends State<MyPage>{
   JwtListener jwtListener = JwtListener();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
+  BackendService backendService = BackendService();
+  List<Widget> pages = [
+    Login(),
+    ProfilePage()
+  ];
+  Future<bool> checkTokenValidity() async {
+    String? token = await SecureStorage.read();
+    return JwtListener().isTokenValid(token!);
+  }
+  Future<String> fetchData() async {
+    String? token = await SecureStorage.read();
+    final response = await http.get(
+        Uri.parse('http://localhost:8080/user/myprofile'),
+        headers:{"Authorization": 'Bearer $token'}
+    );
+    if(response.statusCode==200){
+      return response.body;
+    }
+    else{
+      throw Exception('Failed to load data with status: ${response.statusCode}');
+    }
+  }
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("My Page"),
-      ),
-      body: Column(
-        children: <Widget>[
-          TextField(
-            controller: _usernameController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Username',
-            ),
-          ),
-          TextField(
-            controller: _passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Password',
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              User.token = await jwtListener.getNewToken(_usernameController.text, _passwordController.text);
-              print(User.token);
-              // Validate returns true if the form is valid, or false otherwise.
-            },
-            child: Text('Submit'),
-          ),
-        ],
-      ),
-    );
-  }
-}
+    //Check token validity, if not valid, redirect to login page
+    return FutureBuilder(future: checkTokenValidity(), builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return CircularProgressIndicator();
+      }
+      if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
+      if (snapshot.data == false) {
+        return Scaffold(
+          body: pages[0],
+        );
+      }
+      else
+        return Scaffold(
+          body: pages[1],
+        );
+
+    });
+
+}}

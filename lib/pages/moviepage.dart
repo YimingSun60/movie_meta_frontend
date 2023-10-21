@@ -14,7 +14,7 @@ class MoviePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _backendService = Provider.of<BackendService>(context, listen: false);
+    var backendService = Provider.of<BackendService>(context, listen: false);
     //print(id);
 
     return Scaffold(
@@ -28,7 +28,7 @@ class MoviePage extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-            future: _backendService.fetchData(searchUrl + id),
+            future: backendService.fetchData(searchUrl + id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -77,7 +77,7 @@ class MoviePage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Text(
-                                "Extract: " + snapshot.data[0]['extract'].toString(),
+                                "Extract: ${snapshot.data[0]['extract']}",
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.normal,

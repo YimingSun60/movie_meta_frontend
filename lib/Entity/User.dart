@@ -1,7 +1,8 @@
+import 'dart:ffi';
+
 class User{
   User._();
-  static String _token = "";
+  static int id = 0;
+  //static String username = "";
 
-  static String get token => _token;
-  static set token(String token) => _token = token;
 }

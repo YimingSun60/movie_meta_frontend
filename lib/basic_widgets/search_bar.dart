@@ -42,11 +42,11 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    late Future _resultsFuture;
+    late Future resultsFuture;
     //print(searchUrl + query);
-    _resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
+    resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
     // Show some result based on the selection
-    return FutureBuilder(future: _resultsFuture, builder: (context, snapshot) {
+    return FutureBuilder(future: resultsFuture, builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       } else if (snapshot.hasError) {
@@ -66,10 +66,10 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    late Future _resultsFuture;
+    late Future resultsFuture;
     //print(searchUrl + query);
-    _resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
-    return FutureBuilder(future: _resultsFuture, builder: (context, snapshot) {
+    resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
+    return FutureBuilder(future: resultsFuture, builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
       } else if (snapshot.hasError) {
