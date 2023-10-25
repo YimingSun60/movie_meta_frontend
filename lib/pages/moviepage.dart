@@ -28,7 +28,7 @@ class MoviePage extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-            future: backendService.fetchData(searchUrl + id),
+            future: backendService.fetchData(searchUrl + id, false),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());

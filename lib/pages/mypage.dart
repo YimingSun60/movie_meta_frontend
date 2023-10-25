@@ -17,13 +17,29 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage>{
   JwtListener jwtListener = JwtListener();
   BackendService backendService = BackendService();
-  List<Widget> pages = [
-    Login(),
-    ProfilePage()
-  ];
+
+  bool isLoggedIn = false;
+  void setLoggedIn(){
+    setState(() {
+      isLoggedIn = true;
+    });
+  }
+
+  void setLoggedOut(){
+    setState(() {
+      isLoggedIn = false;
+    });
+  }
+
   Future<bool> checkTokenValidity() async {
     String? token = await SecureStorage.read();
-    return JwtListener().isTokenValid(token!);
+    if(token == null || token == "No data found"){
+      return false;
+    }
+    else {
+      bool valid = await JwtListener().isTokenValid(token!);
+      return valid;
+    }
   }
   Future<String> fetchData() async {
     String? token = await SecureStorage.read();
@@ -41,23 +57,26 @@ class _MyPageState extends State<MyPage>{
   @override
   Widget build(BuildContext context){
     //Check token validity, if not valid, redirect to login page
-    return FutureBuilder(future: checkTokenValidity(), builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return CircularProgressIndicator();
-      }
-      if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      }
-      if (snapshot.data == false) {
-        return Scaffold(
-          body: pages[0],
-        );
-      }
-      else
-        return Scaffold(
-          body: pages[1],
-        );
-
-    });
+    // return FutureBuilder(future: checkTokenValidity(), builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+    //   if (snapshot.connectionState == ConnectionState.waiting) {
+    //     return CircularProgressIndicator();
+    //   }
+    //   if (snapshot.hasError) {
+    //     return Text('Error: ${snapshot.error}');
+    //   }
+    //   if (snapshot.data == false) {
+    //     return Scaffold(
+    //       body: pages[0],
+    //     );
+    //   }
+    //   else
+    //     return Scaffold(
+    //       body: pages[1],
+    //     );
+    //
+    // });
+    return Scaffold(
+      body: isLoggedIn ? ProfilePage(setLoggedOutCallback: setLoggedOut) : Login(setLoggedInCallback:setLoggedIn),
+    );
 
 }}

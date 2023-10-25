@@ -14,6 +14,9 @@ class JwtListener{
   }
 
   Future<bool> isTokenValid(String token) async{
+        if(token == ""){
+          return false;
+        }
         var url = Uri.parse('http://localhost:8080/auth/validate');
         var body = jsonEncode({'token': token});
         final response = await http.post(

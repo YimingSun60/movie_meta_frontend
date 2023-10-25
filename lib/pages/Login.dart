@@ -7,7 +7,8 @@ import '../main.dart';
 
 
 class Login extends StatefulWidget{
-  const Login({Key? key}) : super(key:key);
+  final Function setLoggedInCallback;
+  const Login({Key? key, required this.setLoggedInCallback}) : super(key:key);
   @override
   _LoginState createState() => _LoginState();
 }
@@ -72,11 +73,10 @@ class _LoginState extends State<Login>{
           ElevatedButton(
             onPressed: () async {
               String token = await jwtListener.getNewToken(_usernameController.text, _passwordController.text);
-              print(token);
+              //print(token);
               await SecureStorage.empty();
               await SecureStorage.write(token);
-
-              Navigator.push(context,createRoute(ProfilePage()));
+              widget.setLoggedInCallback();
             },
             child: Text('Submit'),
           ),

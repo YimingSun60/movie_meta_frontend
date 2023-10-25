@@ -60,7 +60,7 @@ class MovieCard extends StatelessWidget {
           onTap: () {
             var backendService = Provider.of<BackendService>(context, listen: false);
             print(title);
-            backendService.fetchData(searchUrl + Uri.encodeComponent(title));
+            backendService.fetchData(searchUrl + Uri.encodeComponent(title),false);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MoviePage(id: id, title: title)),

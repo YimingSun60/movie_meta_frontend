@@ -8,22 +8,34 @@ import 'package:movie_meta/Auth/secure_storage.dart';
 class BackendService extends ChangeNotifier {
 
 
-  List<dynamic> _data = [];
+  var _data;
   get data => _data;
-  Future fetchData(String name) async {
+  Future fetchData(String name, bool isPrivate) async {
+    final http.Response response;
     try {
-      print(Uri.parse('http://localhost:8080/$name'));
+      print(name);
+      //Uri.parse('http://localhost:8080/$name');
       String? token = await SecureStorage.read();
-      //print(await JwtListener().isTokenValid(token!));
-      //print(token);
-      final response = await http.get(
-          Uri.parse('http://localhost:8080/$name'),
-        headers:{"Authorization": 'Bearer $token'}
-      );
+
+
+      if(isPrivate == true) {
+        print("Bearer $token");
+
+        response = await http.get(
+            Uri.parse('http://localhost:8080/$name'),
+            headers: {"Authorization": 'Bearer $token'}
+             //headers: {"Authorization": 'Bearer 1'}
+        );
+      }
+      else{
+        response = await http.get(
+            Uri.parse('http://localhost:8080/$name'),
+        );
+      }
 
       if (response.statusCode == 200) {
         _data = jsonDecode(response.body);
-        
+
 
         notifyListeners(); // Notify listeners about the change
         return _data;
@@ -32,7 +44,7 @@ class BackendService extends ChangeNotifier {
       }
     } catch (error) {
       //print(error); // For debugging purposes
-      throw Exception('Failed to load data due to network issues.');
+      throw Exception(error);
     }
   }
 

@@ -44,7 +44,7 @@ class MovieSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     late Future resultsFuture;
     //print(searchUrl + query);
-    resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
+    resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query),false);
     // Show some result based on the selection
     return FutureBuilder(future: resultsFuture, builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -68,7 +68,7 @@ class MovieSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     late Future resultsFuture;
     //print(searchUrl + query);
-    resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query));
+    resultsFuture = backendService.fetchData(searchUrl + Uri.encodeComponent(query),false);
     return FutureBuilder(future: resultsFuture, builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(child: CircularProgressIndicator());
