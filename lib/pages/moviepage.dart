@@ -16,10 +16,14 @@ class MoviePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var backendService = Provider.of<BackendService>(context, listen: false);
     //print(id);
-
+    dynamic movie;
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(title,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'RobotoMono')),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -37,13 +41,14 @@ class MoviePage extends StatelessWidget {
               } else if (snapshot.data == null) {
                 return Center(child: Text('No data'));
               } else {
+                movie = snapshot.data;
                 return Stack(children: <Widget>[
                   Container(
                     color: Colors.white,
                     height: 400,
                     width: MediaQuery.of(context).size.width,
                     child: Image(
-                      image: NetworkImage(snapshot.data[0]['thumbnail']),
+                      image: NetworkImage(snapshot.data['thumbnail']),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -56,7 +61,8 @@ class MoviePage extends StatelessWidget {
                       initialChildSize: 0.8,
                       minChildSize: 0.3,
                       maxChildSize: 1,
-                      builder: (BuildContext context, ScrollController scrollController) {
+                      builder: (BuildContext context,
+                          ScrollController scrollController) {
                         return Container(
                           decoration: BoxDecoration(
                             boxShadow: [
@@ -76,13 +82,28 @@ class MoviePage extends StatelessWidget {
                             controller: scrollController,
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                "Extract: ${snapshot.data[0]['extract']}",
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: 'RobotoMono',
-                                ),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "Extract",
+                                    style: TextStyle(
+                                      wordSpacing: 2.0,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'RobotoMono',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    snapshot.data['extract'],
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: 'RobotoMono',
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -91,9 +112,7 @@ class MoviePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox.expand(
-                    child: MovieDragableScrollableSheet(
-                        text: snapshot.data[0]['extract'].toString()),
-                  )
+                      child: MovieDragableScrollableSheet(movie: movie))
                 ]);
               }
             }));
@@ -101,9 +120,9 @@ class MoviePage extends StatelessWidget {
 }
 
 class MovieDragableScrollableSheet extends StatelessWidget {
-  final String text;
-
-  const MovieDragableScrollableSheet({super.key, required this.text});
+  //final String text;
+  final dynamic movie;
+  const MovieDragableScrollableSheet({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -127,25 +146,46 @@ class MovieDragableScrollableSheet extends StatelessWidget {
               top: Radius.circular(20.0),
             ),
           ),
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: 2,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(children: [
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
+          child: movie["comments"] != null
+              ? ListView.builder(
+                  controller: scrollController,
+                  itemCount: movie["comments"].length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        leading: CircleAvatar(
+                            child: Text(
+                                movie["comments"][index]["username"].toString().capitalize()[0])),
+                        title: Text(
+                            movie["comments"][index]["comment"].toString()),
+                      ),
+                      Divider()
+                    ]);
+                  },
+                )
+              : Center(
+                  child: Text(
+                  "No comments",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'RobotoMono',
+                    color: Colors.grey,
                   ),
-                  leading: CircleAvatar(child: Text('A')),
-                  title: Text("HeadLine"),
-                ),
-                Divider()
-              ]);
-            },
-          ),
+                  textAlign: TextAlign.center,
+                )),
         );
       },
     );
+  }
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
   }
 }
