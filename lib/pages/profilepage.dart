@@ -1,15 +1,18 @@
-
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
+import 'package:movie_meta/pages/commentpage.dart';
 
 import '../Auth/secure_storage.dart';
 import '../Entity/User.dart';
+
 class ProfilePage extends StatefulWidget {
   final Function setLoggedOutCallback;
-  const ProfilePage({Key? key, required this.setLoggedOutCallback}) : super(key:key);
+
+  const ProfilePage({Key? key, required this.setLoggedOutCallback})
+      : super(key: key);
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -26,48 +29,61 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   //title: Text("Profile Page"),
-      // ),
       body: Column(
         children: [
-          Expanded(
-            child: FutureBuilder(
-              future: backendService.fetchData("user/myprofile/202", true),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.data == null) {
-                  return Center(child: Text('No data'));
-                } else {
-                  for (int i = 0; i < snapshot.data["comments"].length; i++){
-                    User.comments.add(snapshot.data["comments"][i]["comment"]);
-                  }
-                  User.id = snapshot.data["id"];
-                  User.username = snapshot.data["username"];
-
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+          FutureBuilder(
+            future: backendService.fetchData(
+                "user/myprofile/" + User.id.toString(), true),
+            builder: (context, snapshot) {
+              //User.resetCommentList();
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                print(snapshot.error);
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.data == null) {
+                return Center(child: Text('No data'));
+              } else {
+                User.movies = snapshot.data["comments"];
+                User.id = snapshot.data["id"];
+                User.username = snapshot.data["username"];
+                return Expanded(
+                  child: ListView(
+                    physics: BouncingScrollPhysics(),
                     children: [
-                      ProfileWidget(
-                        imagePath: User.imagePath
-                      )
+                      ProfileWidget(imagePath: User.imagePath),
+                      const SizedBox(height: 24),
+                      Text(User.username,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 34)),
+                      const SizedBox(height: 5),
+                      Text("UID: " + User.id.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14)),
+                      const SizedBox(height: 24),
+                      ListTile(
+                        title: Text("Comments"),
+                        subtitle: Text("View your comments"),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage()));
+                        },
+                      ),
                     ],
-                  );
-                }
-              },
-            ),
+                  ),
+                );
+              }
+            },
           ),
           Center(
             child: ElevatedButton(
               onPressed: _logout,
               child: Text("Logout"),
             ),
-          )
+          ),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -76,6 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
 class ProfileWidget extends StatelessWidget {
   final String imagePath;
+
   const ProfileWidget({
     Key? key,
     required this.imagePath,
@@ -86,25 +103,27 @@ class ProfileWidget extends StatelessWidget {
     return Center(
       child: Stack(
         children: [
-          buildImage(imagePath),
-
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 150, maxWidth: 150),
+            child: buildImage(imagePath),
+          ),
         ],
       ),
     );
   }
 
   Widget buildImage(String imagePath) => ClipOval(
-    child:Material(
-      color: Colors.transparent,
-      child: Ink.image(
-        image: AssetImage(imagePath),
-        fit: BoxFit.cover,
-        width: 128,
-        height: 128,
-        child: InkWell(
-          onTap: () {},
+        child: Material(
+          color: Colors.transparent,
+          child: Ink.image(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+            width: 128,
+            height: 128,
+            child: InkWell(
+              onTap: () {},
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

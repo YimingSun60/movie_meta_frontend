@@ -18,7 +18,7 @@ class _MyPageState extends State<MyPage>{
   JwtListener jwtListener = JwtListener();
   BackendService backendService = BackendService();
 
-  bool isLoggedIn = false;
+  static bool isLoggedIn = false;
   void setLoggedIn(){
     setState(() {
       isLoggedIn = true;
@@ -56,25 +56,7 @@ class _MyPageState extends State<MyPage>{
   }
   @override
   Widget build(BuildContext context){
-    //Check token validity, if not valid, redirect to login page
-    // return FutureBuilder(future: checkTokenValidity(), builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-    //   if (snapshot.connectionState == ConnectionState.waiting) {
-    //     return CircularProgressIndicator();
-    //   }
-    //   if (snapshot.hasError) {
-    //     return Text('Error: ${snapshot.error}');
-    //   }
-    //   if (snapshot.data == false) {
-    //     return Scaffold(
-    //       body: pages[0],
-    //     );
-    //   }
-    //   else
-    //     return Scaffold(
-    //       body: pages[1],
-    //     );
-    //
-    // });
+    print(isLoggedIn);
     return Scaffold(
       body: isLoggedIn ? ProfilePage(setLoggedOutCallback: setLoggedOut) : Login(setLoggedInCallback:setLoggedIn),
     );
