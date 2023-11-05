@@ -1,3 +1,4 @@
+import '../pages/moviepage.dart';
 import 'service.dart';
 import 'package:flutter/material.dart';
 
@@ -80,6 +81,9 @@ class MovieSearchDelegate extends SearchDelegate {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(snapshot.data[index]['title']),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> MoviePage(id: snapshot.data[index]['id'].toString(), title: snapshot.data[index]['title'])));
+              },
             );
           },
         );
