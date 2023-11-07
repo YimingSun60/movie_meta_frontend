@@ -3,7 +3,7 @@ import 'package:movie_meta/basic_widgets/service.dart';
 import 'package:provider/provider.dart';
 import '/pages/moviepage.dart';
 
-const String searchUrl = "search?title=";
+const String searchUrl = "public/search?title=";
 
 class MovieCard extends StatelessWidget {
   final String title;
@@ -59,7 +59,7 @@ class MovieCard extends StatelessWidget {
           ),
           onTap: () {
             var backendService = Provider.of<BackendService>(context, listen: false);
-            print(title);
+            print(searchUrl + Uri.encodeComponent(title));
             backendService.fetchData(searchUrl + Uri.encodeComponent(title),false);
             Navigator.push(
               context,

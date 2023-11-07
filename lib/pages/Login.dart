@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_meta/Auth/jwt_listener.dart';
 import 'package:movie_meta/Auth/secure_storage.dart';
-import 'package:movie_meta/pages/profilepage.dart';
 
-import '../main.dart';
 
 
 class Login extends StatefulWidget{

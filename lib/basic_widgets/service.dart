@@ -12,19 +12,15 @@ class BackendService extends ChangeNotifier {
   get data => _data;
   Future fetchData(String name, bool isPrivate) async {
     final http.Response response;
+    print(name);
     try {
-      print(name);
-      //Uri.parse('http://localhost:8080/$name');
       String? token = await SecureStorage.read();
 
 
       if(isPrivate == true) {
-        print("Bearer $token");
-
         response = await http.get(
             Uri.parse('http://localhost:8080/$name'),
             headers: {"Authorization": 'Bearer $token'}
-             //headers: {"Authorization": 'Bearer 1'}
         );
       }
       else{

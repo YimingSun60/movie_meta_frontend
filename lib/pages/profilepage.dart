@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
@@ -33,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           FutureBuilder(
             future: backendService.fetchData(
-                "user/myprofile/" + User.id.toString(), true),
+                "user/myprofile/${User.id}", true),
             builder: (context, snapshot) {
               //User.resetCommentList();
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 34)),
                       const SizedBox(height: 5),
-                      Text("UID: " + User.id.toString(),
+                      Text("UID: ${User.id}",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14)),

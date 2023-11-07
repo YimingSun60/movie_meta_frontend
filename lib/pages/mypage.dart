@@ -37,7 +37,7 @@ class _MyPageState extends State<MyPage>{
       return false;
     }
     else {
-      bool valid = await JwtListener().isTokenValid(token!);
+      bool valid = await JwtListener().isTokenValid(token);
       return valid;
     }
   }

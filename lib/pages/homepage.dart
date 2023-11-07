@@ -6,7 +6,6 @@ import 'package:movie_meta/basic_widgets/card.dart';
 
 import '../Auth/jwt_listener.dart';
 import '../basic_widgets/global_context_service.dart';
-import 'Login.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);

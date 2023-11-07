@@ -12,9 +12,10 @@ class MoviePage extends StatelessWidget {
   const MoviePage({Key? key, required this.id, required this.title})
       : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
-    var backendService = Provider.of<BackendService>(context, listen: false);
+    final BackendService backendService = BackendService();
     //print(id);
     dynamic movie;
     return Scaffold(
@@ -37,11 +38,13 @@ class MoviePage extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
+                print("error");
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (snapshot.data == null) {
                 return Center(child: Text('No data'));
               } else {
                 movie = snapshot.data;
+                print(movie["comments"].length);
                 return Stack(children: <Widget>[
                   Container(
                     color: Colors.white,
@@ -146,7 +149,7 @@ class MovieDragableScrollableSheet extends StatelessWidget {
               top: Radius.circular(20.0),
             ),
           ),
-          child: movie["comments"] != null
+          child: movie["comments"].length > 0
               ? ListView.builder(
                   controller: scrollController,
                   itemCount: movie["comments"].length,
@@ -186,6 +189,6 @@ class MovieDragableScrollableSheet extends StatelessWidget {
 
 extension StringExtension on String {
   String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }
