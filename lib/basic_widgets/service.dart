@@ -16,7 +16,6 @@ class BackendService extends ChangeNotifier {
     try {
       String? token = await SecureStorage.read();
 
-
       if(isPrivate == true) {
         response = await http.get(
             Uri.parse('http://localhost:8080/$name'),

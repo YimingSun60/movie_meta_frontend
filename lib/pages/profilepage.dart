@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
-import 'package:movie_meta/pages/commentpage.dart';
+import 'package:movie_meta/pages/profile_comment_history.dart';
 
 import '../Auth/secure_storage.dart';
 import '../Entity/User.dart';
