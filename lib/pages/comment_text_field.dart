@@ -21,7 +21,7 @@ class CommentEditor extends StatelessWidget{
     final response = await http.post(
       Uri.parse(url),
       headers: {"Content-Type": "application/json",
-      "Authorization": "Bearer ${token}"},
+      "Authorization": "Bearer $token"},
       body: body,
     );
     if(response.statusCode == 200){
@@ -52,11 +52,7 @@ class CommentEditor extends StatelessWidget{
                 Navigator.pop(context);
                 callback();
             },
-            child: Positioned(
-              bottom: 0,
-              right: 0,
-              child: Text('Submit'),
-            ),
+            child: Text('Submit'),
           )
         ]
       ),

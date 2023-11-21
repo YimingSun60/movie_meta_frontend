@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_meta/pages/moviepage.dart';
 
 
 extension StringExtension on String {

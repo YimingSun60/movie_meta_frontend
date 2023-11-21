@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _logout() async {
+    Future<void> logout() async {
       await SecureStorage.empty();
       widget.setLoggedOutCallback();
       // Optionally, push to a login or home page here.
@@ -78,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: _logout,
+              onPressed: logout,
               child: Text("Logout"),
             ),
           ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movie_meta/basic_widgets/add_collection.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
 import 'package:movie_meta/pages/comment_text_field.dart';
-import 'package:provider/provider.dart';
 
+import '../Entity/User.dart';
 import '../basic_widgets/comment_bottom.dart';
 import 'movie_comment_list.dart';
 
@@ -46,7 +47,9 @@ class _MoviePageState extends State<MoviePage> {
         ),
         floatingActionButton: CommentButtom(
           CommentEditor(
-              movieId: widget.id, movieTitle: widget.title, callback: refresh),
+              movieId: widget.id,
+              movieTitle: widget.title,
+              callback: refresh),
         ),
         body: FutureBuilder(
             future: backendService.fetchData(searchUrl + widget.id, false),
@@ -61,82 +64,57 @@ class _MoviePageState extends State<MoviePage> {
               } else {
                 movie = snapshot.data;
                 print(movie["comments"].length);
-                return Stack(children: <Widget>[
-                  Container(
-                    color: Colors.white,
-                    height: 400,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image(
-                      image: NetworkImage(snapshot.data['thumbnail']),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: DraggableScrollableSheet(
-                      initialChildSize: 0.8,
-                      minChildSize: 0.3,
-                      maxChildSize: 1,
-                      builder: (BuildContext context,
-                          ScrollController scrollController) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: Offset(0, -5),
+                return Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(children: <Widget>[
+                        //Movie poster
+                        SizedBox(
+                          child: Container(
+                            color: Colors.white,
+                            height: 400,
+                            width: MediaQuery.of(context).size.width,
+                            child: Image(
+                              image: NetworkImage(snapshot.data['thumbnail']),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        CollectionBottom(User.id,widget.id),
+                        //Movie extract
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              Text(
+                                "Extract",
+                                style: TextStyle(
+                                  wordSpacing: 2.0,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'RobotoMono',
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                snapshot.data['extract'],
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'RobotoMono',
+                                ),
                               ),
                             ],
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20.0),
-                            ),
                           ),
-                          child: SingleChildScrollView(
-                            controller: scrollController,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "Extract",
-                                    style: TextStyle(
-                                      wordSpacing: 2.0,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'RobotoMono',
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    snapshot.data['extract'],
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: 'RobotoMono',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                        ),
+                        const SizedBox(height: 20),
+                      ]),
                     ),
-                  ),
-                  SizedBox.expand(
-                      child: MovieDragableScrollableSheet(movie: movie))
-                ]);
+                    MovieDragableScrollableSheet(movie: movie)
+                  ],
+                );
               }
             }));
   }
 }
-
-
-
