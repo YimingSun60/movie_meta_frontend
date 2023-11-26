@@ -5,7 +5,7 @@ class User{
   static String username = "";
   static String imagePath = "assets/images/download.png";
   static List<dynamic> movies = [];
-
+  static List<dynamic> collction = [];
   static void resetCommentList(){
     movies = [];
   }
