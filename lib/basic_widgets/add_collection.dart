@@ -25,15 +25,15 @@ class _CollectionBottomState extends State<CollectionBottom> {
   bool isLiked = false;
 
   Future<bool> onLikeButtonTapped(bool isLiked) async{
-    var url_add = Uri.parse('http://localhost:8080/public/collection_add');
-    var url_delete = Uri.parse('http://localhost:8080/public/collection_remove');
-    var url;
+    var urlAdd = Uri.parse('http://localhost:8080/public/collection_add');
+    var urlDelete = Uri.parse('http://localhost:8080/public/collection_remove');
+    Uri url;
     if(isLiked == false){
-      url = url_add;
+      url = urlAdd;
       isLiked = true;
     }
     else{
-      url = url_delete;
+      url = urlDelete;
       isLiked = false;
     }
     var body = jsonEncode({'userId': _userId, 'movieId': _movieId});

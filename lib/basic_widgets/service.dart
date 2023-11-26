@@ -30,8 +30,6 @@ class BackendService extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         _data = jsonDecode(response.body);
-
-
         notifyListeners(); // Notify listeners about the change
         return _data;
       } else {

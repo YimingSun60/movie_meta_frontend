@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_meta/basic_widgets/navigation.dart';
 import 'package:movie_meta/basic_widgets/search_bar.dart';
 import 'package:movie_meta/basic_widgets/service.dart';
+import 'package:movie_meta/pages/collection_page.dart';
 import 'package:movie_meta/pages/mypage.dart';
 import 'package:provider/provider.dart';
 import 'basic_widgets/global_context_service.dart';
@@ -58,11 +59,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       MyHomePage(),
-      Container(
-        color: Colors.green,
-        alignment: Alignment.center,
-        child: const Text('Page 2'),
-      ),
+      MyCollection(),
       MyPage(),
     ];
     return Scaffold(

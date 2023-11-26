@@ -21,6 +21,7 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
+  
   @override
   Widget build(BuildContext context) {
     final BackendService backendService = BackendService();
