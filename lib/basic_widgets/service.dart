@@ -12,7 +12,7 @@ class BackendService extends ChangeNotifier {
   get data => _data;
   Future fetchData(String name, bool isPrivate) async {
     final http.Response response;
-    print(name);
+    //print(name);
     try {
       String? token = await SecureStorage.read();
 

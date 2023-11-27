@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 } else if (snapshot.data == null) {
                   return Center(child: Text('No data'));
                 } else {
-                  print(snapshot.data.length);
+                  //print(snapshot.data.length);
                   return Column(children: <Widget>[
                     Expanded(
                         child: ListView.builder(

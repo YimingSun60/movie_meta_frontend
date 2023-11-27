@@ -19,7 +19,6 @@ class MyCollection extends StatefulWidget {
 class _MyCollectionState extends State<MyCollection> {
   Future fetchData() async {
     final url = "http://localhost:8080/collection/" + User.id.toString();
-    print(url);
     String? token = await SecureStorage.read();
     final response = await http.get(Uri.parse(url),
         headers: {"Authorization": 'Bearer $token'});

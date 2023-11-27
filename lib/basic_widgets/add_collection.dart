@@ -45,7 +45,7 @@ class _CollectionBottomState extends State<CollectionBottom> {
       }
     }
     else{
-      print("Failed");
+      //print("Failed");
       isLiked = false;
       return isLiked;
     }
@@ -60,9 +60,10 @@ class _CollectionBottomState extends State<CollectionBottom> {
 
 
   Future<bool> onLikeButtonTapped(bool isLiked) async{
-    var urlAdd = Uri.parse('http://localhost:8080/public/collection_add');
-    var urlDelete = Uri.parse('http://localhost:8080/public/collection_remove');
+    var urlAdd = Uri.parse('http://localhost:8080/collection_add');
+    var urlDelete = Uri.parse('http://localhost:8080/collection_remove');
     Uri url;
+    print(isLiked);
     if(isLiked == false){
       url = urlAdd;
       isLiked = true;
@@ -85,7 +86,7 @@ class _CollectionBottomState extends State<CollectionBottom> {
         print("Collection added");
       }
     } else {
-      print("Failed");
+      //print("Failed");
     }
 
     /// send your request here
